@@ -40,6 +40,7 @@ namespace IdentityApp.Controllers
 
             // retrieve error details from identityserver
             var message = await _interaction.GetErrorContextAsync(errorId);
+
             if (message != null)
             {
                 vm.Error = message;

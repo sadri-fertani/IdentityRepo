@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using IdentityApp.Models;
 using IdentityApp.Models.AccountViewModels;
 using IdentityApp.Services;
@@ -59,6 +55,7 @@ namespace IdentityApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
+            _logger.LogInformation("Access to login view.");
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -71,6 +68,8 @@ namespace IdentityApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            _logger.LogInformation("Post to login view.");
+
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -97,6 +96,8 @@ namespace IdentityApp.Controllers
                     return View(model);
                 }
             }
+
+            _logger.LogInformation("Invalid Post new user.");
 
             // If we got this far, something failed, redisplay form
             return View(model);

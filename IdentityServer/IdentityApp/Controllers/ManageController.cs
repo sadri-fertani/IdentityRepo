@@ -48,6 +48,8 @@ namespace IdentityApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Access to current user info.");
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
