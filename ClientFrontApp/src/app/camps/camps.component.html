@@ -1,22 +1,41 @@
 <h1>List of Camps</h1>
 
-<p *ngIf="!camps"><em>Loading...</em></p>
+<p *ngIf="!Camps"><em>Loading...</em></p>
 
-<table class='table' *ngIf="camps">
+<table class='table' *ngIf="Camps">
   <thead>
     <tr>
       <th>Name</th>
       <th>Moniker</th>
       <th>Event Date</th>
       <th>Length</th>
+      <th>Venue</th>
+      <th>Location Address</th>
+      <th>Talks</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let camp of camps">
+    <tr *ngFor="let camp of Camps">
       <td>{{ camp.name }}</td>
       <td>{{ camp.moniker }}</td>
       <td>{{ camp.eventDate }}</td>
       <td>{{ camp.length }}</td>
+      <td>{{ camp.venue }}</td>
+      <td>
+        {{ camp.locationAddress1 }}
+        <br />
+        {{ camp.locationAddress2 }}
+        <br />
+        {{ camp.locationAddress3 }}
+        <br />
+        {{ camp.locationCityTown }}
+        <br />
+        {{ camp.locationStateProvince }}
+        <br />
+        {{ camp.locationPostalCode }}
+        <br />
+        {{ camp.locationCountry }}</td>
+      <td>{{ (camp.talks).length }}</td>
     </tr>
   </tbody>
 </table>

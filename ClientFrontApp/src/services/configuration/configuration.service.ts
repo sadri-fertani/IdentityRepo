@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
+import { IServerConfiguration } from '../../models/IConfiguration';
+
 @Injectable()
 export class ConfigurationService {
 
@@ -29,10 +31,4 @@ export class ConfigurationService {
   get identityServerAddress() {
     return this.configuration.IdentityServerAddress;
   }
-
-}
-
-export interface IServerConfiguration {
-  ApiAddress: string;
-  IdentityServerAddress: string;
 }

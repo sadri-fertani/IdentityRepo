@@ -11,24 +11,22 @@ export class AuthService implements OnInit, OnDestroy {
   isAuthorizedSubscription: Subscription;
   isAuthorized: boolean;
 
-  constructor(public oidcSecurityService: OidcSecurityService,
-    private http: HttpClient,
-    @Inject('ORIGIN_URL') originUrl: string,
-    configuration: ConfigurationService
-  ) {
-    const openIdImplicitFlowConfiguration = new OpenIDImplicitFlowConfiguration();
-    openIdImplicitFlowConfiguration.stsServer = configuration.identityServerAddress;
-    openIdImplicitFlowConfiguration.redirect_url = originUrl;
-    openIdImplicitFlowConfiguration.client_id = 'ng';
-    openIdImplicitFlowConfiguration.response_type = 'id_token token';
-    openIdImplicitFlowConfiguration.scope = 'openid profile apiApp';
-    openIdImplicitFlowConfiguration.post_logout_redirect_uri = originUrl + 'home';
-    openIdImplicitFlowConfiguration.forbidden_route = '/forbidden';
-    openIdImplicitFlowConfiguration.unauthorized_route = '/unauthorized';
-    openIdImplicitFlowConfiguration.auto_userinfo = true;
-    openIdImplicitFlowConfiguration.log_console_warning_active = true;
-    openIdImplicitFlowConfiguration.log_console_debug_active = false;
-    openIdImplicitFlowConfiguration.max_id_token_iat_offset_allowed_in_seconds = 10;
+  constructor(public oidcSecurityService: OidcSecurityService, private http: HttpClient, @Inject('ORIGIN_URL') originUrl: string, configuration: ConfigurationService) {
+    
+    const openIdImplicitFlowConfiguration = {
+      stsServer: configuration.identityServerAddress,
+      redirect_url: originUrl,
+      client_id: 'ng',
+      response_type: 'id_token token',
+      scope: 'openid profile apiApp',
+      post_logout_redirect_uri: originUrl + 'home',
+      forbidden_route: '/forbidden',
+      unauthorized_route: '/unauthorized',
+      auto_userinfo: true,
+      log_console_warning_active: true,
+      log_console_debug_active: false,
+      max_id_token_iat_offset_allowed_in_seconds: 10
+    } as OpenIDImplicitFlowConfiguration;
 
     this.oidcSecurityService.setupModule(openIdImplicitFlowConfiguration);
 
@@ -76,23 +74,5 @@ export class AuthService implements OnInit, OnDestroy {
     if (typeof location !== "undefined" && window.location.hash) {
       this.oidcSecurityService.authorizedCallback();
     }
-  }
-
-  get(url: string): Observable<any> {
-    return this.http.get<any>(url);
-  }
-
-  put(url: string, data: any): Observable<any> {
-    const body = JSON.stringify(data);
-    return this.http.put<any>(url, body);
-  }
-
-  delete(url: string): Observable<any> {
-    return this.http.delete<any>(url);
-  }
-
-  post(url: string, data: any): Observable<any> {
-    const body = JSON.stringify(data);
-    return this.http.post<any>(url, body);
   }
 }

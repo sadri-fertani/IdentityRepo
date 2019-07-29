@@ -13,9 +13,12 @@ import { CampsComponent } from './camps/camps.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './page.not.found.component';
 
-import { ConfigurationService } from "./services/configuration/configuration.service";
-import { AuthService } from './services/auth.service';
-import { TokenInterceptor } from './services/token.interceptor'
+import { ConfigurationService } from "../services/configuration/configuration.service";
+
+import { AuthService } from '../services/auth.service';
+import { RepositoryCamp } from '../repositories/RepositoryCamp';
+
+import { TokenInterceptor } from '../services/token.interceptor'
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -44,6 +47,7 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
       provide: 'ORIGIN_URL',
       useFactory: getBaseUrl
     },
+    RepositoryCamp,
     AuthService,
     OidcSecurityService,
     ConfigurationService,
