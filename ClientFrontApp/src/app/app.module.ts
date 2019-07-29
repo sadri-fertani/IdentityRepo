@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -13,6 +13,7 @@ import { ConfigurationService } from "./configuration/configuration.service";
 
 import { AuthModule, OidcSecurityService } from 'angular-auth-oidc-client';
 import { AuthService } from './services/auth.service';
+import { TokenInterceptor } from './services/token.interceptor'
 
 const appInitializerFn = (appConfig: ConfigurationService) => {
   return () => {
@@ -52,6 +53,11 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
       useFactory: appInitializerFn,
       multi: true,
       deps: [ConfigurationService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

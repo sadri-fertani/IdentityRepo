@@ -1,5 +1,5 @@
-import { Injectable, Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, OnInit, OnDestroy, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigurationService } from "../configuration/configuration.service";
@@ -79,36 +79,20 @@ export class AuthService implements OnInit, OnDestroy {
   }
 
   get(url: string): Observable<any> {
-    return this.http.get<any>(url, { headers: this.getHeaders() });
+    return this.http.get<any>(url);
   }
 
   put(url: string, data: any): Observable<any> {
     const body = JSON.stringify(data);
-    return this.http.put<any>(url, body, { headers: this.getHeaders() });
+    return this.http.put<any>(url, body);
   }
 
   delete(url: string): Observable<any> {
-    return this.http.delete<any>(url, { headers: this.getHeaders() });
+    return this.http.delete<any>(url);
   }
 
   post(url: string, data: any): Observable<any> {
     const body = JSON.stringify(data);
-    return this.http.post<any>(url, body, { headers: this.getHeaders() });
-  }
-
-  private getHeaders() {
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('X-Version', '1.1');
-    return this.appendAuthHeader(headers);
-  }
-
-  private appendAuthHeader(headers: HttpHeaders) {
-    const token = this.oidcSecurityService.getToken();
-
-    if (token === '') return headers;
-
-    const tokenValue = 'Bearer ' + token;
-    return headers.set('Authorization', tokenValue);
+    return this.http.post<any>(url, body);
   }
 }
