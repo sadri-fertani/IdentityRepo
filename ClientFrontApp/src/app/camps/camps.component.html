@@ -1,0 +1,22 @@
+<h1>List of Camps</h1>
+
+<p *ngIf="!camps"><em>Loading...</em></p>
+
+<table class='table' *ngIf="camps">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Moniker</th>
+      <th>Event Date</th>
+      <th>Length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let camp of camps">
+      <td>{{ camp.name }}</td>
+      <td>{{ camp.moniker }}</td>
+      <td>{{ camp.eventDate }}</td>
+      <td>{{ camp.length }}</td>
+    </tr>
+  </tbody>
+</table>
