@@ -2,16 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { AuthModule, OidcSecurityService } from 'angular-auth-oidc-client';
+
+import { RoutingModule } from './app.routing.module';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CampsComponent } from './camps/camps.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
-import { ConfigurationService } from "./configuration/configuration.service";
+import { PageNotFoundComponent } from './page.not.found.component';
 
-import { AuthModule, OidcSecurityService } from 'angular-auth-oidc-client';
+import { ConfigurationService } from "./services/configuration/configuration.service";
 import { AuthService } from './services/auth.service';
 import { TokenInterceptor } from './services/token.interceptor'
 
@@ -27,18 +29,15 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     NavMenuComponent,
     HomeComponent,
     CampsComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     AuthModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'camps', component: CampsComponent },
-      { path: 'unauthorized', component: UnauthorizedComponent }
-    ])
+    RoutingModule
   ],
   providers: [
     {

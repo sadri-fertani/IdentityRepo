@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { ConfigurationService } from "../configuration/configuration.service";
+import { ConfigurationService } from "../services/configuration/configuration.service";
 
 @Component({
   selector: 'camps',

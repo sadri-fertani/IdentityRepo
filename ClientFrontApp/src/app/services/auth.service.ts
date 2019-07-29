@@ -2,7 +2,7 @@ import { Injectable, OnInit, OnDestroy, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
-import { ConfigurationService } from "../configuration/configuration.service";
+import { ConfigurationService } from "./configuration/configuration.service";
 
 import { OidcSecurityService, OpenIDImplicitFlowConfiguration } from 'angular-auth-oidc-client';
 
