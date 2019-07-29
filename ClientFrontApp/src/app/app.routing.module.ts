@@ -7,9 +7,10 @@ import { CampsComponent } from './camps/camps.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 export const routes: Routes = [
-    {
-        path: 'home',
-        component: HomeComponent
+    { 
+        path: '', 
+        component: HomeComponent, 
+        pathMatch: 'full' 
     },
     {
         path: 'camps',
@@ -18,11 +19,6 @@ export const routes: Routes = [
     {
         path: 'unauthorized',
         component: UnauthorizedComponent
-    },
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
     },
     { 
         path: '**', 
