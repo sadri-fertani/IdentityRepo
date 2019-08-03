@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Application custom log
 Log/*.log
+
+# Application custom monitoring
+Reports/Metrics.txt

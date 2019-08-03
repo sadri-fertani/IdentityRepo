@@ -3,24 +3,44 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>91f9d008-f6bd-430e-96f9-34aac5ac0674</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Logs\**" />
+    <Compile Remove="Reports\**" />
     <Compile Remove="wwwroot\**" />
+    <Content Remove="Logs\**" />
+    <Content Remove="Reports\**" />
     <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <EmbeddedResource Remove="Reports\**" />
     <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Logs\**" />
+    <None Remove="Reports\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Logs\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="App.Metrics.AspNetCore.Health" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Formatters.Json" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Health.Checks.Http" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Health.Checks.Network" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Health.Checks.Process" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.Console" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.Http" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.1.0" />
+    <PackageReference Include="App.Metrics.Reporting.TextFile" Version="3.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

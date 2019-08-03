@@ -1,4 +1,5 @@
 ﻿using ApiApp.Data;
+using App.Metrics;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +23,11 @@ namespace ApiApp
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
+                .AddMetricsTrackingMiddleware()
+                .AddMetricsReportingHostedService();
+
+            services
                 .AddDbContext<CampContext>();
 
             services
@@ -44,12 +50,16 @@ namespace ApiApp
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services
-                .AddMvcCore()
+                .AddMvcCore(options =>
+                {
+                    //options.Filters.Add(new MetricsResourceFilter(new MyCustomMetricsRouteNameResolver()));
+                })
+                .AddMetricsCore()
                 .AddAuthorization()
                 .AddJsonFormatters();
 
             services
-                .AddAuthentication(options => 
+                .AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,13 +84,14 @@ namespace ApiApp
                 });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            app.UseCors(policyName: "default");
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-
-            app.UseMvc();
+            app
+                .UseCors(policyName: "default")
+                .UseHttpsRedirection()
+                .UseAuthentication()
+                .UseMetricsAllMiddleware()
+                .UseMvc();
         }
     }
 }

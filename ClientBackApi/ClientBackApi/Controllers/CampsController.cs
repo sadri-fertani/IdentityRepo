@@ -30,12 +30,14 @@ namespace ApiApp.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<CampModel[]>> Get(bool includeTalks = false)
         {
             try
             {
+                _logger.LogInformation("Get list of all camps");
+
                 var results = await _repository.GetAllCampsAsync(includeTalks);
 
                 return _mapper.Map<CampModel[]>(results);
