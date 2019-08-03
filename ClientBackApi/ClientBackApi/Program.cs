@@ -76,8 +76,12 @@ namespace ApiApp
                 .ConfigureHealthWithDefaults(
                     builder =>
                     {
-                        builder.HealthChecks.AddCheck("DatabaseConnected", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("Database Connection OK")));
-                        builder.HealthChecks.AddPingCheck("Network", "google.com", TimeSpan.FromSeconds(10));
+                        builder
+                            .HealthChecks.AddCheck("DatabaseConnected", () => new ValueTask<HealthCheckResult>(HealthCheckResult.Healthy("Database Connection OK")))
+                            .HealthChecks.AddProcessPrivateMemorySizeCheck("Private Memory Size", 200)
+                            .HealthChecks.AddProcessVirtualMemorySizeCheck("Virtual Memory Size", 200)
+                            .HealthChecks.AddProcessPhysicalMemoryCheck("Working Set", 200)
+                            .HealthChecks.AddPingCheck("Network", "google.com", TimeSpan.FromSeconds(10));
                     })
                 .UseHealth()
                 .UseMetricsWebTracking()
