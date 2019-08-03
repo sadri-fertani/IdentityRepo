@@ -1,54 +1,56 @@
 import { Injectable, OnInit, OnDestroy, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
-import { Subscription } from 'rxjs/Subscription';
-import { ConfigurationService } from "./configuration/configuration.service";
+import { Observable, Subject } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { AuthorizationResult } from 'src/lib/auth/models/authorization-result';
+import { OidcSecurityService } from 'src/lib/auth/services/oidc.security.service';
 
-import { OidcSecurityService, OpenIDImplicitFlowConfiguration } from 'angular-auth-oidc-client';
+//import { OidcSecurityService, AuthWellKnownEndpoints, AuthorizationResult } from '../lib/auth/data-services/oidc-data.service';
 
 @Injectable()
 export class AuthService implements OnInit, OnDestroy {
   isAuthorizedSubscription: Subscription;
-  isAuthorized: boolean;
+  isAuthenticated: boolean;
+  userData: any;
+  private _onModuleSetup = new Subject<boolean>();
+  private _onCheckSessionChanged = new Subject<boolean>();
+  private _onAuthorizationResult = new Subject<AuthorizationResult>();
 
-  constructor(public oidcSecurityService: OidcSecurityService, private http: HttpClient, @Inject('ORIGIN_URL') originUrl: string, configuration: ConfigurationService) {
-    
-    const openIdImplicitFlowConfiguration = {
-      stsServer: configuration.identityServerAddress,
-      redirect_url: originUrl,
-      client_id: 'ng',
-      response_type: 'id_token token',
-      scope: 'openid profile apiApp',
-      post_logout_redirect_uri: originUrl + 'home',
-      forbidden_route: '/forbidden',
-      unauthorized_route: '/unauthorized',
-      auto_userinfo: true,
-      log_console_warning_active: true,
-      log_console_debug_active: false,
-      max_id_token_iat_offset_allowed_in_seconds: 10
-    } as OpenIDImplicitFlowConfiguration;
+  public get onModuleSetup(): Observable<boolean> {
+    return this._onModuleSetup.asObservable();
+  }
 
-    this.oidcSecurityService.setupModule(openIdImplicitFlowConfiguration);
+  constructor(public oidcSecurityService: OidcSecurityService) {
 
-    if (this.oidcSecurityService.moduleSetup) {
+    this.oidcSecurityService.getIsModuleSetup().pipe(
+      filter((isModuleSetup: boolean) => isModuleSetup),
+      take(1)
+    ).subscribe((isModuleSetup: boolean) => {
+      console.log('isModuleSetup : ', isModuleSetup)
       this.doCallbackLogicIfRequired();
-    } else {
-      this.oidcSecurityService.onModuleSetup.subscribe(() => {
-        this.doCallbackLogicIfRequired();
-      });
-    }
+    });
+
+    // if (this.oidcSecurityService.moduleSetup) {
+    //   this.doCallbackLogicIfRequired();
+    // } else {
+    //   this.oidcSecurityService.onModuleSetup.subscribe(() => {
+    //     this.doCallbackLogicIfRequired();
+    //   });
+    // }
   }
 
   ngOnInit() {
-    this.isAuthorizedSubscription = this.oidcSecurityService.getIsAuthorized().subscribe(
-      (isAuthorized: boolean) => {
-        this.isAuthorized = isAuthorized;
-      });
+    this.oidcSecurityService.getIsAuthorized().subscribe(auth => {
+      this.isAuthenticated = auth;
+    });
+
+    this.oidcSecurityService.getUserData().subscribe(userData => {
+      this.userData = userData;
+    });
   }
 
   ngOnDestroy(): void {
     this.isAuthorizedSubscription.unsubscribe();
-    this.oidcSecurityService.onModuleSetup.unsubscribe();
   }
 
   getIsAuthorized(): Observable<boolean> {
@@ -62,7 +64,7 @@ export class AuthService implements OnInit, OnDestroy {
 
   refreshSession() {
     console.log('start refreshSession');
-    this.oidcSecurityService.authorize();
+    this.oidcSecurityService.refreshSession().subscribe(() => { });
   }
 
   logout() {
@@ -71,8 +73,7 @@ export class AuthService implements OnInit, OnDestroy {
   }
 
   private doCallbackLogicIfRequired() {
-    if (typeof location !== "undefined" && window.location.hash) {
-      this.oidcSecurityService.authorizedCallback();
-    }
+    // Will do a callback, if the url has a code and state parameter.
+    this.oidcSecurityService.authorizedCallbackWithCode(window.location.toString());
   }
 }
