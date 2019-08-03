@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9eb9657575d24055bd2af5f5657a2b20)](https://www.codacy.com/app/sadri-fertani/IdentityRepo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sadri-fertani/IdentityRepo&amp;utm_campaign=Badge_Grade)
+
 # IdentityRepo
 Identity Server on IIS
 
