@@ -30,3 +30,8 @@ brew install influxdb
 * http://localhost:5001/metrics-text
 * http://localhost:5001/env
 * http://localhost:5001/health
+
+## Cache
+```
+dotnet sql-cache create "Server=localhost;Database=DistCacheDB;Trusted_Connection=True;" dbo CacheTable
+```

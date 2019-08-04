@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiApp.Data
 {
+    [Serializable]
     [Table("Pays", Schema = "ref")]
     public class Pays : Reference
     {

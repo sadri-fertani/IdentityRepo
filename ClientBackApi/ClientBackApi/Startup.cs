@@ -26,6 +26,14 @@ namespace ApiApp
                 .AddMemoryCache();
 
             services
+                .AddDistributedSqlServerCache(options =>
+                {
+                    options.ConnectionString = Configuration.GetConnectionString("CacheDatabaseConnection");
+                    options.SchemaName = "dbo";
+                    options.TableName = "CacheTable";
+                });
+
+            services
                 .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
                 .AddMetricsTrackingMiddleware()
                 .AddMetricsReportingHostedService();
@@ -91,6 +99,7 @@ namespace ApiApp
         public void Configure(IApplicationBuilder app)
         {
             app
+                //.UseResponseCaching()
                 .UseCors(policyName: "default")
                 .UseHttpsRedirection()
                 .UseAuthentication()
