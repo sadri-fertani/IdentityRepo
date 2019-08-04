@@ -23,7 +23,9 @@ namespace ApiApp.Controllers
         private readonly ILogger<PaysController> _logger;
         private readonly IMemoryCache _memoryCache;
         private readonly IDistributedCache _distributedCache;
+
         private const string MC_PAYS = "MC_PAYS";
+        private const string DC_PAYS = "DC_PAYS";
 
         public PaysController(
             IReferenceRepository<Pays> repository, 
@@ -61,7 +63,7 @@ namespace ApiApp.Controllers
         {
             try
             {
-                Pays result = (await _distributedCache.GetAsync($"{MC_PAYS}-{id.ToString()}")).ToObject<Pays>();
+                Pays result = (await _distributedCache.GetAsync($"{DC_PAYS}-{id.ToString()}")).ToObject<Pays>();
 
                 // Look for cache key.
                 if (result == null)
@@ -71,7 +73,7 @@ namespace ApiApp.Controllers
 
                     // Save data in cache.
                     _distributedCache.Set(
-                        $"{MC_PAYS}-{id.ToString()}",
+                        $"{DC_PAYS}-{id.ToString()}",
                         result.ToByteArray<Pays>(),
                         new DistributedCacheEntryOptions
                         {
