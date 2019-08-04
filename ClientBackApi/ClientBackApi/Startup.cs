@@ -23,6 +23,9 @@ namespace ApiApp
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddMemoryCache();
+
+            services
                 .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
                 .AddMetricsTrackingMiddleware()
                 .AddMetricsReportingHostedService();
@@ -31,7 +34,8 @@ namespace ApiApp
                 .AddDbContext<CampContext>();
 
             services
-                .AddScoped<ICampRepository, CampRepository>();
+                .AddScoped<ICampRepository, CampRepository>()
+                .AddScoped<IReferenceRepository<Pays>, ReferenceRepository<Pays>>();
 
             services
                 .AddAutoMapper(typeof(Startup));

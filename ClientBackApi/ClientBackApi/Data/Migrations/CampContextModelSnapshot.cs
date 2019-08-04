@@ -39,17 +39,6 @@ namespace ApiApp.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Camps");
-
-                    b.HasData(
-                        new
-                        {
-                            CampId = 1,
-                            EventDate = new DateTime(2018, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Length = 1,
-                            LocationId = 1,
-                            Moniker = "ATL2018",
-                            Name = "Atlanta Code Camp"
-                        });
                 });
 
             modelBuilder.Entity("CoreCodeCamp.Data.Location", b =>
@@ -77,18 +66,6 @@ namespace ApiApp.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Location");
-
-                    b.HasData(
-                        new
-                        {
-                            LocationId = 1,
-                            Address1 = "123 Main Street",
-                            CityTown = "Atlanta",
-                            Country = "USA",
-                            PostalCode = "12345",
-                            StateProvince = "GA",
-                            VenueName = "Atlanta Convention Center"
-                        });
                 });
 
             modelBuilder.Entity("CoreCodeCamp.Data.Speaker", b =>
@@ -116,30 +93,6 @@ namespace ApiApp.Migrations
                     b.HasKey("SpeakerId");
 
                     b.ToTable("Speakers");
-
-                    b.HasData(
-                        new
-                        {
-                            SpeakerId = 1,
-                            BlogUrl = "http://wildermuth.com",
-                            Company = "Wilder Minds LLC",
-                            CompanyUrl = "http://wilderminds.com",
-                            FirstName = "Shawn",
-                            GitHub = "shawnwildermuth",
-                            LastName = "Wildermuth",
-                            Twitter = "shawnwildermuth"
-                        },
-                        new
-                        {
-                            SpeakerId = 2,
-                            BlogUrl = "http://shawnandresa.com",
-                            Company = "Wilder Minds LLC",
-                            CompanyUrl = "http://wilderminds.com",
-                            FirstName = "Resa",
-                            GitHub = "resawildermuth",
-                            LastName = "Wildermuth",
-                            Twitter = "resawildermuth"
-                        });
                 });
 
             modelBuilder.Entity("CoreCodeCamp.Data.Talk", b =>
@@ -165,26 +118,6 @@ namespace ApiApp.Migrations
                     b.HasIndex("SpeakerId");
 
                     b.ToTable("Talks");
-
-                    b.HasData(
-                        new
-                        {
-                            TalkId = 1,
-                            Abstract = "Entity Framework from scratch in an hour. Probably cover it all",
-                            CampId = 1,
-                            Level = 100,
-                            SpeakerId = 1,
-                            Title = "Entity Framework From Scratch"
-                        },
-                        new
-                        {
-                            TalkId = 2,
-                            Abstract = "Thinking of good sample data examples is tiring.",
-                            CampId = 1,
-                            Level = 200,
-                            SpeakerId = 2,
-                            Title = "Writing Sample Data Made Easy"
-                        });
                 });
 
             modelBuilder.Entity("CoreCodeCamp.Data.Camp", b =>
@@ -204,6 +137,28 @@ namespace ApiApp.Migrations
                         .WithMany()
                         .HasForeignKey("SpeakerId");
                 });
+
+            modelBuilder.Entity("CoreCodeCamp.Data.Pays", b =>
+            {
+                b.Property<Int16>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                b.Property<int>("Code");
+
+                b.Property<string>("Alpha2");
+
+                b.Property<string>("Alpha3");
+
+                b.Property<string>("NomEN");
+
+                b.Property<string>("NomFR");
+
+                b.HasKey("Id");
+
+                b.ToTable("Pays");
+            });
+
 #pragma warning restore 612, 618
         }
     }

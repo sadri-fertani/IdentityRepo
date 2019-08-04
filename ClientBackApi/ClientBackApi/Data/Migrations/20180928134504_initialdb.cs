@@ -9,6 +9,23 @@ namespace ApiApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Pays",
+                columns: table => new
+                {
+                    Id = table.Column<Int16>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<int>(nullable: false),
+                    Alpha2 = table.Column<string>(nullable: false),
+                    Alpha3 = table.Column<string>(nullable: false),
+                    NomEN = table.Column<string>(nullable: false),
+                    NomFR = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pays", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Location",
                 columns: table => new
                 {
@@ -159,6 +176,9 @@ namespace ApiApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Location");
+
+            migrationBuilder.DropTable(
+                name: "Pays");
         }
     }
 }
