@@ -26,5 +26,18 @@ namespace ApiApp.Models
         [Required]
         [StringLength(3, MinimumLength = 4)]
         public string NomFR { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            PaysModel extObj = obj as PaysModel;
+
+            return extObj == null ?
+                false : (extObj.Code.Equals(this.Code) && extObj.Alpha2.Equals(this.Alpha2) && extObj.Alpha3.Equals(this.Alpha3));
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }

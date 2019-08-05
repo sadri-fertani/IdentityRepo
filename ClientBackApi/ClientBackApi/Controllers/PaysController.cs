@@ -24,8 +24,8 @@ namespace ApiApp.Controllers
         private readonly IMemoryCache _memoryCache;
         private readonly IDistributedCache _distributedCache;
 
-        private const string MC_PAYS = "MC_PAYS";
-        private const string DC_PAYS = "DC_PAYS";
+        public const string MC_PAYS = "MC_PAYS";
+        public const string DC_PAYS = "DC_PAYS";
 
         public PaysController(
             IReferenceRepository<Pays> repository, 
