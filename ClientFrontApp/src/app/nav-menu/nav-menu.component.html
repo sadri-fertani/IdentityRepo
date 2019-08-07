@@ -21,9 +21,6 @@
           <a *ngIf="isAuthorized" [routerLink]="['/camps']"><span class='glyphicon glyphicon-th-list'></span> Camps</a>
         </li>
         <li [routerLinkActive]="['link-active']">
-          <a [routerLink]="['/campsFree']"><span class='glyphicon glyphicon-th-list'></span> Camps Free</a>
-        </li>
-        <li [routerLinkActive]="['link-active']">
           <a *ngIf="!isAuthorized" (click)="login()" [routerLink]="['/login']"><span class="glyphicon glyphicon-user"></span> Login</a>
         </li>
         <li [routerLinkActive]="['link-active']">

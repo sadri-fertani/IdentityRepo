@@ -9,10 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CampsComponent } from './camps/camps.component';
-import { CampsFreeComponent } from './camps/campsFree.component';
-import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 
 import { ConfigurationService } from "../services/configuration/configuration.service";
@@ -37,10 +33,6 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    CampsComponent,
-    CampsFreeComponent,
-    UnauthorizedComponent,
     PageNotFoundComponent
   ],
   imports: [
