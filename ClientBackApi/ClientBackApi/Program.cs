@@ -33,7 +33,7 @@ namespace ApiApp
 
                 var influxOptions = new MetricsReportingInfluxDbOptions();
                 configuration.GetSection(nameof(MetricsReportingInfluxDbOptions)).Bind(influxOptions);
-                influxOptions.InfluxDb.Password = configuration["MetricsReportingInfluxDbOptions:InfluxDb:InfluxDb:Password"];
+                influxOptions.InfluxDb.Password = configuration["MetricsReportingInfluxDbOptions:InfluxDb:Password"];
 
                 return influxOptions;
             }
@@ -91,7 +91,7 @@ namespace ApiApp
                     (hostingContext, loggerConfiguration) =>
                     {
                         loggerConfiguration
-                    .ReadFrom.Configuration(hostingContext.Configuration);
+                            .ReadFrom.Configuration(hostingContext.Configuration);
                     }
                 );
         }

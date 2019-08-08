@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ApiApp.Services;
+using Hangfire;
+using System;
+using ClientBackApi.MiddlewareExtensions;
+using ClientBackApi.Jobs;
+using ApiApp.Models;
 
 namespace ApiApp
 {
@@ -22,6 +28,9 @@ namespace ApiApp
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddScoped<IJob, CheckDataJob>();
+
+            services
                 .AddMemoryCache();
 
             services
@@ -33,12 +42,18 @@ namespace ApiApp
                 });
 
             services
-                .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
-                .AddMetricsTrackingMiddleware()
-                .AddMetricsReportingHostedService();
+                .AddHangfire(options =>
+                {
+                    options.UseSqlServerStorage(Configuration.GetConnectionString("Hangfire"));
+                });
 
             services
                 .AddDbContext<CampContext>();
+
+            services
+                .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
+                .AddMetricsTrackingMiddleware()
+                .AddMetricsReportingHostedService();
 
             services
                 .AddScoped<ICampRepository, CampRepository>()
@@ -57,7 +72,10 @@ namespace ApiApp
                 });
 
             services
-                .AddMvc(opt => opt.EnableEndpointRouting = false)
+                .AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services
@@ -83,6 +101,10 @@ namespace ApiApp
                 });
 
             services
+                .AddTransient<IEmailSender, EmailSender>()
+                .Configure<EmailSettings>(options => Configuration.GetSection("SendGrid").Bind(options)); ;
+
+            services
                 .AddCors(options =>
                 {
                     options.AddPolicy("default", policy =>
@@ -95,15 +117,22 @@ namespace ApiApp
                 });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IServiceProvider srv)
         {
+            GlobalConfiguration.Configuration
+                .UseActivator(new HangfireActivator(srv));
+
             app
-                //.UseResponseCaching()
                 .UseCors(policyName: "default")
                 .UseHttpsRedirection()
                 .UseAuthentication()
                 .UseMetricsAllMiddleware()
+                .UseHangfireDashboard()
+                .UseHangfireServer()
                 .UseMvc();
+
+            RecurringJob.RemoveIfExists(nameof(CheckDataJob));
+            RecurringJob.AddOrUpdate<IJob>((job) => job.ExecuteAsync(), "*/1 * * * *");
         }
     }
 }

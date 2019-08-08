@@ -28,9 +28,9 @@ namespace ApiApp.Controllers
         public const string DC_PAYS = "DC_PAYS";
 
         public PaysController(
-            IReferenceRepository<Pays> repository, 
-            IMapper mapper, 
-            IMemoryCache memoryCache, 
+            IReferenceRepository<Pays> repository,
+            IMapper mapper,
+            IMemoryCache memoryCache,
             IDistributedCache distributedCache,
             ILogger<PaysController> logger)
         {
@@ -105,7 +105,7 @@ namespace ApiApp.Controllers
         /// <returns>list of Pays</returns>
         private async Task<Pays[]> LoadPays()
         {
-            // Look for cache key.
+            //Look for cache key.
             if (_memoryCache.TryGetValue(MC_PAYS, out Pays[] results))
             {
                 _logger.LogError("List of pays loaded from MemoryCache.");
