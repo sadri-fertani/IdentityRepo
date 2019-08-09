@@ -17,6 +17,7 @@ import { AuthService } from '../services/auth.service';
 import { RepositoryCamp } from '../repositories/RepositoryCamp';
 
 import { TokenInterceptor } from '../services/token.interceptor';
+import { EnvServiceProvider } from 'src/services/environment/env.service.provider';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   console.log('APP_INITIALIZER STARTING');
@@ -42,15 +43,16 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     AppRoutingModule
   ],
   providers: [
-    {
-      provide: 'ORIGIN_URL',
-      useFactory: getBaseUrl
-    },
     RepositoryCamp,
     AuthService,
     OidcSecurityService,
     ConfigurationService,
     OidcConfigService,
+    EnvServiceProvider,
+    {
+      provide: 'ORIGIN_URL',
+      useFactory: getBaseUrl
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: loadConfig,
@@ -95,7 +97,7 @@ export class AppModule {
         start_checksession: true,
         log_console_warning_active: true,
         log_console_debug_active: false,
-        max_id_token_iat_offset_allowed_in_seconds: 10*60*60,
+        max_id_token_iat_offset_allowed_in_seconds: 10 * 60 * 60,
         history_cleanup_off: true,
         iss_validation_off: true
       } as OpenIdConfiguration;
