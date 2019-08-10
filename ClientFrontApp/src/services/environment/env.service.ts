@@ -7,4 +7,6 @@ export class EnvService {
     public apiUrl = '';
     public enableDebug = false;
     public envName = '';
+    public apiAddress = '';
+    public identityServerAddress = '';
 }

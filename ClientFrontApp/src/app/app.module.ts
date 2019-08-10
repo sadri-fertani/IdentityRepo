@@ -19,16 +19,11 @@ import { RepositoryCamp } from '../repositories/RepositoryCamp';
 import { TokenInterceptor } from '../services/token.interceptor';
 import { EnvServiceProvider } from 'src/services/environment/env.service.provider';
 
-export function loadConfig(oidcConfigService: OidcConfigService) {
+export function loadAuthenticationConfig(oidcConfigService: OidcConfigService, appConfig: ConfigurationService) {
   console.log('APP_INITIALIZER STARTING');
-  return () => oidcConfigService.load_using_stsServer('http://localhost/IdentityServer');
+  appConfig.loadConfig();
+  return () => oidcConfigService.load_using_stsServer(appConfig.identityServerAddress);
 }
-
-const appInitializerFn = (appConfig: ConfigurationService) => {
-  return () => {
-    return appConfig.loadConfig();
-  };
-};
 
 @NgModule({
   declarations: [
@@ -50,20 +45,10 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
     OidcConfigService,
     EnvServiceProvider,
     {
-      provide: 'ORIGIN_URL',
-      useFactory: getBaseUrl
-    },
-    {
       provide: APP_INITIALIZER,
-      useFactory: loadConfig,
-      deps: [OidcConfigService],
+      useFactory: loadAuthenticationConfig,
+      deps: [OidcConfigService, ConfigurationService],
       multi: true,
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializerFn,
-      multi: true,
-      deps: [ConfigurationService]
     },
     {
       provide: HTTP_INTERCEPTORS,
@@ -75,25 +60,24 @@ const appInitializerFn = (appConfig: ConfigurationService) => {
 })
 
 export class AppModule {
-  constructor(
-    private oidcSecurityService: OidcSecurityService,
-    private oidcConfigService: OidcConfigService
-  ) {
+  constructor(private oidcSecurityService: OidcSecurityService, private oidcConfigService: OidcConfigService) {
     this.oidcConfigService.onConfigurationLoaded.subscribe((configResult: ConfigResult) => {
 
+      const baseUrl = document.getElementsByTagName('base')[0].href;
+
       const openIdConfiguration = {
-        stsServer: 'http://localhost/IdentityServer',
-        redirect_url: getBaseUrl(),
+        stsServer: configResult.customConfig.stsServer,
+        redirect_url: baseUrl,
         client_id: 'ng',
         response_type: 'id_token token',
         scope: 'openid profile apiApp',
         post_login_route: '/',
-        post_logout_redirect_uri: getBaseUrl() + 'home',
+        post_logout_redirect_uri: `${baseUrl}home`,
         forbidden_route: '/forbidden',
         unauthorized_route: '/unauthorized',
         silent_renew: true,
-        silent_renew_url: getBaseUrl() + '/silent-renew.html',
-        //auto_userinfo: true,
+        silent_renew_url: `${baseUrl}silent-renew.html`,
+        auto_userinfo: true,
         start_checksession: true,
         log_console_warning_active: true,
         log_console_debug_active: false,
@@ -107,16 +91,10 @@ export class AppModule {
         configResult.authWellknownEndpoints
       );
 
-      this.oidcSecurityService.authorize(url => {
-        console.log('URL', url)
+      this.oidcSecurityService.authorize(() => {
+        console.log('oidcConfigService loaded')
       })
 
     });
-
-    console.log('APP STARTING');
   }
-}
-
-export function getBaseUrl() {
-  return document.getElementsByTagName('base')[0].href;
 }

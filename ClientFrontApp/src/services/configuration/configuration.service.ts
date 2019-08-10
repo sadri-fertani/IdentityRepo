@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
 
 import { IServerConfiguration } from '../../models/IConfiguration';
+import { EnvService } from '../environment/env.service';
 
 @Injectable()
 export class ConfigurationService {
 
   private configuration: IServerConfiguration;
 
-  constructor() {
+  constructor(private envService: EnvService) {
   }
 
   loadConfig() {
-    return new Promise((resolve) => {
-      resolve();
-    }).then(() => {
-      this.configuration = {
-        ApiAddress: 'http://localhost:5001/api/',
-        IdentityServerAddress: 'http://localhost/IdentityServer'
-      } as IServerConfiguration;
-    }).catch((err) => {
-      console.log(err);
-    });
+    console.log(`Load configuration for '${this.envService.envName}' environment.`);
+
+    this.configuration = {
+      ApiAddress: this.envService.apiAddress,
+      IdentityServerAddress: this.envService.identityServerAddress
+    } as IServerConfiguration;
   }
 
   get apiAddress() {

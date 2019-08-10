@@ -25,8 +25,7 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/env.js"
+              "src/assets"
             ],
             "styles": [
               "src/styles.less",
@@ -42,6 +41,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/HomeApp/",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -88,8 +88,7 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/env.js"
+              "src/assets"
             ],
             "styles": [
               "src/styles.less"

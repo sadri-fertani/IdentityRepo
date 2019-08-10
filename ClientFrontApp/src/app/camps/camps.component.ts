@@ -11,11 +11,11 @@ import { ICamp } from '../../models/ICamp';
 export class CampsComponent {
   private camps: Array<ICamp>;
 
-  private get Camps(): Array<ICamp> {
+  public get Camps(): Array<ICamp> {
     return this.camps;
   }
 
-  private set Camps(value) {
+  public set Camps(value) {
     this.camps = value;
   }
 
