@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "clean:prod": "del /q C:\\LocalWebApp\\HomeApp\\* && for /d %x in (C:\\LocalWebApp\\HomeApp\\*) do @rd /s /q \"%x\"",
+    "deploy": "xcopy /s .\\dist\\ClientFrontApp C:\\LocalWebApp\\HomeApp"
   },
   "private": true,
   "dependencies": {

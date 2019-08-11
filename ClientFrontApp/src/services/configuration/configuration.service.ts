@@ -16,7 +16,8 @@ export class ConfigurationService {
 
     this.configuration = {
       ApiAddress: this.envService.apiAddress,
-      IdentityServerAddress: this.envService.identityServerAddress
+      IdentityServerAddress: this.envService.identityServerAddress,
+      ClientId: this.envService.clientId
     } as IServerConfiguration;
   }
 
@@ -26,5 +27,9 @@ export class ConfigurationService {
 
   get identityServerAddress() {
     return this.configuration.IdentityServerAddress;
+  }
+
+  get clientId() {
+    return this.configuration.ClientId;
   }
 }

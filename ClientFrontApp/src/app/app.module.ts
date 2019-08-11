@@ -60,7 +60,10 @@ export function loadAuthenticationConfig(oidcConfigService: OidcConfigService, a
 })
 
 export class AppModule {
-  constructor(private oidcSecurityService: OidcSecurityService, private oidcConfigService: OidcConfigService) {
+  constructor(
+    private oidcSecurityService: OidcSecurityService, 
+    private oidcConfigService: OidcConfigService,
+    private appConfig: ConfigurationService) {
     this.oidcConfigService.onConfigurationLoaded.subscribe((configResult: ConfigResult) => {
 
       const baseUrl = document.getElementsByTagName('base')[0].href;
@@ -68,7 +71,7 @@ export class AppModule {
       const openIdConfiguration = {
         stsServer: configResult.customConfig.stsServer,
         redirect_url: baseUrl,
-        client_id: 'ng',
+        client_id: this.appConfig.clientId,
         response_type: 'id_token token',
         scope: 'openid profile apiApp',
         post_login_route: '/',
@@ -92,7 +95,7 @@ export class AppModule {
       );
 
       this.oidcSecurityService.authorize(() => {
-        console.log('oidcConfigService loaded')
+        console.log('OIDC CONFIGURATION LOADED')
       })
 
     });
