@@ -62,8 +62,8 @@ namespace IdentityApp
                         new Secret("secret".Sha256())
                     },
 
-                    RedirectUris = { $"{configuration["ClientAddress"]}/signin-oidc" },
-                    PostLogoutRedirectUris = { $"{configuration["ClientAddress"]}/signout-callback-oidc" },
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
@@ -83,9 +83,9 @@ namespace IdentityApp
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = true,
 
-                    RedirectUris = { $"{configuration["ClientAddress"]}/" },
-                    PostLogoutRedirectUris = { $"{configuration["ClientAddress"]}/" },
-                    AllowedCorsOrigins = { configuration["ClientAddress"] },
+                    RedirectUris = { "http://localhost:5002/" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/" },
+                    AllowedCorsOrigins = { "http://localhost:5002" },
 
                     AllowedScopes =
                     {
