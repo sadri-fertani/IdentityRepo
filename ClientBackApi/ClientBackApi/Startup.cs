@@ -13,12 +13,7 @@ using System;
 using ClientBackApi.MiddlewareExtensions;
 using ClientBackApi.Jobs;
 using ApiApp.Models;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using ClientBackApi.Models;
-using Microsoft.Extensions.Options;
-using ClientBackApi.Models.Rules;
 
 namespace ApiApp
 {
@@ -33,6 +28,9 @@ namespace ApiApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddAppConfiguration(Configuration);
+
             services
                 .AddScoped<IJob, CheckDataJob>();
 
@@ -57,24 +55,9 @@ namespace ApiApp
                 .AddDbContext<CampContext>();
 
             services
-                .Configure<MonikerSettings>(Configuration.GetSection("Moniker"))
-                .TryAddSingleton<IMonikerSettings>(options => options.GetRequiredService<IOptions<MonikerSettings>>().Value);
-
-            services
-                .AddSingleton<IMonikerRule, AlphaNumericNameRule>()
-                .AddSingleton<IMonikerRule, UpperCaseNameRule>();
-
-            services
-                .AddTransient<IMonikerRuleProcessor, MonikerRuleProcessor>();
-
-            services
                 .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
                 .AddMetricsTrackingMiddleware()
                 .AddMetricsReportingHostedService();
-
-            services
-                .AddScoped<ICampRepository, CampRepository>()
-                .TryAddScoped(typeof(IReferenceRepository<>), typeof(ReferenceRepository<>));
 
             services
                 .AddAutoMapper(typeof(Startup));
