@@ -16,6 +16,9 @@ using ApiApp.Models;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using ClientBackApi.Models;
+using Microsoft.Extensions.Options;
+using ClientBackApi.Models.Rules;
 
 namespace ApiApp
 {
@@ -54,6 +57,17 @@ namespace ApiApp
                 .AddDbContext<CampContext>();
 
             services
+                .Configure<MonikerSettings>(Configuration.GetSection("Moniker"))
+                .TryAddSingleton<IMonikerSettings>(options => options.GetRequiredService<IOptions<MonikerSettings>>().Value);
+
+            services
+                .AddSingleton<IMonikerRule, AlphaNumericNameRule>()
+                .AddSingleton<IMonikerRule, UpperCaseNameRule>();
+
+            services
+                .AddTransient<IMonikerRuleProcessor, MonikerRuleProcessor>();
+
+            services
                 .AddMetrics(AppMetrics.CreateDefaultBuilder().Build())
                 .AddMetricsTrackingMiddleware()
                 .AddMetricsReportingHostedService();
@@ -89,9 +103,6 @@ namespace ApiApp
                 .AddMetricsCore()
                 .AddAuthorization()
                 .AddJsonFormatters();
-
-            services
-                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services
                 .AddIdentity<IdentityUser, IdentityRole>();

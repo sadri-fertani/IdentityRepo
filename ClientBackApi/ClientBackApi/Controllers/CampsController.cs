@@ -1,6 +1,8 @@
 ﻿using ApiApp.Data;
 using ApiApp.Models;
 using AutoMapper;
+using ClientBackApi.Models;
+using ClientBackApi.Models.Rules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,20 +24,23 @@ namespace ApiApp.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<ICampRepository> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMonikerSettings _monikerSettings;
+        private readonly IMonikerRuleProcessor _monikerRuleProcessor;
 
         public CampsController(
-            ICampRepository repository, 
-            IMapper mapper, 
-            LinkGenerator linkGenerator, 
+            ICampRepository repository,
+            IMapper mapper,
+            LinkGenerator linkGenerator,
             ILogger<ICampRepository> logger,
-            IHttpContextAccessor httpContextAccessor)
+            IMonikerSettings monikerSettings,
+            IMonikerRuleProcessor monikerRuleProcessor)
         {
             _repository = repository;
             _mapper = mapper;
             _linkGenerator = linkGenerator;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
+            _monikerSettings = monikerSettings;
+            _monikerRuleProcessor = monikerRuleProcessor;
         }
 
         //[Authorize]
@@ -66,11 +71,6 @@ namespace ApiApp.Controllers
             {
                 var zz = User;
                 var zzz = from c in User.Claims select new { c.Type, c.Value };
-                var htctx = _httpContextAccessor.HttpContext.User;
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
-                var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role).Value;
-
-                //IdentityModel.Principal.
 
                 var results = await _repository.GetAllCampsAsync(true);
 
@@ -184,6 +184,14 @@ namespace ApiApp.Controllers
         {
             try
             {
+                if (!_monikerSettings.PutEnabled)
+                    return this.StatusCode(StatusCodes.Status403Forbidden, "Update disable on API...");
+
+                var checkResults = await _monikerRuleProcessor.PassesAllRulesAsync(model);
+
+                if(!checkResults.Passed)
+                    return this.StatusCode(StatusCodes.Status406NotAcceptable, checkResults.Errors);
+
                 var oldCamp = await _repository.GetCampAsync(moniker);
                 if (oldCamp == null) return NotFound($"Could not find camp with moniker of {moniker}");
 
