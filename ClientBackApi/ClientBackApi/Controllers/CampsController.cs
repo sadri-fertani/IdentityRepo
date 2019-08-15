@@ -23,8 +23,6 @@ namespace ApiApp.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<ICampRepository> _logger;
-        private readonly IMonikerSettings _monikerSettings;
-        private readonly IMonikerRuleProcessor _monikerRuleProcessor;
 
         public CampsController(
             ICampRepository repository,
@@ -38,8 +36,6 @@ namespace ApiApp.Controllers
             _mapper = mapper;
             _linkGenerator = linkGenerator;
             _logger = logger;
-            _monikerSettings = monikerSettings;
-            _monikerRuleProcessor = monikerRuleProcessor;
         }
 
         //[Authorize]
@@ -179,14 +175,18 @@ namespace ApiApp.Controllers
         }
 
         [HttpPut("{moniker}")]
-        public async Task<ActionResult<CampModel>> Put(string moniker, CampModel model)
+        public async Task<ActionResult<CampModel>> Put(
+            [FromServices]IMonikerSettings monikerSettings,
+            [FromServices]IMonikerRuleProcessor monikerRuleProcessor,
+            string moniker, 
+            CampModel model)
         {
             try
             {
-                if (!_monikerSettings.PutEnabled)
+                if (!monikerSettings.PutEnabled)
                     return this.StatusCode(StatusCodes.Status403Forbidden, "Update disable on API...");
 
-                var checkResults = await _monikerRuleProcessor.PassesAllRulesAsync(model);
+                var checkResults = await monikerRuleProcessor.PassesAllRulesAsync(model);
 
                 if(!checkResults.Passed)
                     return this.StatusCode(StatusCodes.Status406NotAcceptable, checkResults.Errors);
