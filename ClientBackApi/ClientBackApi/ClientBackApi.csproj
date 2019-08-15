@@ -38,6 +38,7 @@
     <PackageReference Include="App.Metrics.Reporting.Http" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.1.0" />
     <PackageReference Include="App.Metrics.Reporting.TextFile" Version="3.1.0" />
+    <PackageReference Include="AspNetCore.Identity.ByPermissions" Version="1.1.16" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="Hangfire" Version="1.7.6" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />

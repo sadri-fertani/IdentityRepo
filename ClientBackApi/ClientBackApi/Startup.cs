@@ -13,6 +13,9 @@ using System;
 using ClientBackApi.MiddlewareExtensions;
 using ClientBackApi.Jobs;
 using ApiApp.Models;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace ApiApp
 {
@@ -57,7 +60,7 @@ namespace ApiApp
 
             services
                 .AddScoped<ICampRepository, CampRepository>()
-                .AddScoped<IReferenceRepository<Pays>, ReferenceRepository<Pays>>();
+                .TryAddScoped(typeof(IReferenceRepository<>), typeof(ReferenceRepository<>));
 
             services
                 .AddAutoMapper(typeof(Startup));
@@ -88,6 +91,12 @@ namespace ApiApp
                 .AddJsonFormatters();
 
             services
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services
+                .AddIdentity<IdentityUser, IdentityRole>();
+
+            services
                 .AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -102,7 +111,7 @@ namespace ApiApp
 
             services
                 .AddTransient<IEmailSender, EmailSender>()
-                .Configure<EmailSettings>(options => Configuration.GetSection("SendGrid").Bind(options)); ;
+                .Configure<EmailSettings>(options => Configuration.GetSection("SendGrid").Bind(options)); 
 
             services
                 .AddCors(options =>

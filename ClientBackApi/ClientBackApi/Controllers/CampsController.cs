@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ApiApp.Controllers
@@ -21,13 +22,20 @@ namespace ApiApp.Controllers
         private readonly IMapper _mapper;
         private readonly LinkGenerator _linkGenerator;
         private readonly ILogger<ICampRepository> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CampsController(ICampRepository repository, IMapper mapper, LinkGenerator linkGenerator, ILogger<ICampRepository> logger)
+        public CampsController(
+            ICampRepository repository, 
+            IMapper mapper, 
+            LinkGenerator linkGenerator, 
+            ILogger<ICampRepository> logger,
+            IHttpContextAccessor httpContextAccessor)
         {
             _repository = repository;
             _mapper = mapper;
             _linkGenerator = linkGenerator;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //[Authorize]
@@ -56,6 +64,14 @@ namespace ApiApp.Controllers
         {
             try
             {
+                var zz = User;
+                var zzz = from c in User.Claims select new { c.Type, c.Value };
+                var htctx = _httpContextAccessor.HttpContext.User;
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst("sub").Value;
+                var userEmail = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Role).Value;
+
+                //IdentityModel.Principal.
+
                 var results = await _repository.GetAllCampsAsync(true);
 
                 return _mapper.Map<CampModel[]>(results);

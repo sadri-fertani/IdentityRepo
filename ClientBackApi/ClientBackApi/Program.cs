@@ -22,14 +22,14 @@ namespace ApiApp
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static MetricsReportingInfluxDbOptions InfluxDbOptions 
+        public static MetricsReportingInfluxDbOptions InfluxDbOptions
         {
             get
             {
                 var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
-                .AddUserSecrets<Program>(true).Build();
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+                    .AddUserSecrets<Program>(true).Build();
 
                 var influxOptions = new MetricsReportingInfluxDbOptions();
                 configuration.GetSection(nameof(MetricsReportingInfluxDbOptions)).Bind(influxOptions);
