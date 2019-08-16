@@ -14,6 +14,9 @@ using ClientBackApi.MiddlewareExtensions;
 using ClientBackApi.Jobs;
 using ApiApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ApiApp
 {
@@ -105,7 +108,7 @@ namespace ApiApp
 
             services
                 .AddTransient<IEmailSender, EmailSender>()
-                .Configure<EmailSettings>(options => Configuration.GetSection("SendGrid").Bind(options)); 
+                .Configure<EmailSettings>(options => Configuration.GetSection("SendGrid").Bind(options));
 
             services
                 .AddCors(options =>
@@ -117,6 +120,39 @@ namespace ApiApp
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
+                });
+
+            services
+                .AddSwaggerGen(options =>
+                {
+                    options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
+                    options.SwaggerDoc("v1", new Info
+                    {
+                        Title = "ClientBack API Swagger",
+                        Version = "v1",
+                        Contact = new Contact
+                        {
+                            Name = "Sadri FERTANI",
+                            Email = "sadri.fertani@live.fr",
+                            Url = "https://github.com/sadri-fertani/"
+                        }
+                    });
+
+                    var security = new Dictionary<string, IEnumerable<string>>
+                    {
+                        {"Bearer", new string[] { }},
+                    };
+
+                    options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
+                    });
+
+                    options.AddSecurityRequirement(security);
                 });
         }
 
@@ -132,6 +168,11 @@ namespace ApiApp
                 .UseMetricsAllMiddleware()
                 .UseHangfireDashboard()
                 .UseHangfireServer()
+                .UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClientBack API Swagger");
+                })
                 .UseMvc();
 
             RecurringJob.RemoveIfExists(nameof(CheckDataJob));

@@ -135,6 +135,7 @@ namespace ApiApp.Controllers
             }
         }
 
+        [HttpPost]
         public async Task<ActionResult<CampModel>> Post(CampModel model)
         {
             try

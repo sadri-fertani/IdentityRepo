@@ -2,6 +2,7 @@
 using ApiApp.Models;
 using AutoMapper;
 using ClientBackApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -58,6 +59,7 @@ namespace ApiApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<PaysModel>> GetPays(Int16 id)
         {
