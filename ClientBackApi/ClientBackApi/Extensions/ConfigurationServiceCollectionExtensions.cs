@@ -17,8 +17,14 @@ namespace Microsoft.Extensions.DependencyInjection
                 .TryAddSingleton<IMonikerSettings>(options => options.GetRequiredService<IOptions<MonikerSettings>>().Value);
 
             services
-                .AddSingleton<IMonikerRule, AlphaNumericNameRule>()
-                .AddSingleton<IMonikerRule, UpperCaseNameRule>();
+                .Scan(scan =>
+                {
+                    scan
+                        .FromAssemblyOf<IMonikerRule>()
+                        .AddClasses(c => c.AssignableTo<IMonikerRule>())
+                        .AsImplementedInterfaces()
+                        .WithScopedLifetime();
+                });
 
             services
                 .AddTransient<IMonikerRuleProcessor, MonikerRuleProcessor>();

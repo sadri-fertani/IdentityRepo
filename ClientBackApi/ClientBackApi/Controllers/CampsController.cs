@@ -28,9 +28,7 @@ namespace ApiApp.Controllers
             ICampRepository repository,
             IMapper mapper,
             LinkGenerator linkGenerator,
-            ILogger<ICampRepository> logger,
-            IMonikerSettings monikerSettings,
-            IMonikerRuleProcessor monikerRuleProcessor)
+            ILogger<ICampRepository> logger)
         {
             _repository = repository;
             _mapper = mapper;
