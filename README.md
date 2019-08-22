@@ -1,6 +1,9 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9eb9657575d24055bd2af5f5657a2b20)](https://www.codacy.com/app/sadri-fertani/IdentityRepo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sadri-fertani/IdentityRepo&amp;utm_campaign=Badge_Grade)
 
 # IdentityRepo
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/65920d430cb440cb9d2ea0d752cf5d9f)](https://app.codacy.com/app/sadri-fertani/IdentityRepo?utm_source=github.com&utm_medium=referral&utm_content=sadri-fertani/IdentityRepo&utm_campaign=Badge_Grade_Settings)
+
 Identity Server on IIS
 
 ## Grafana - Cloud
