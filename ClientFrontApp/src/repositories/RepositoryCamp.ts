@@ -12,7 +12,7 @@ import { ICamp } from '../models/ICamp';
 export class RepositoryCamp implements IRepositoryBase<ICamp> {
 
     private get Route(): string {
-        return this.configuration.apiAddress + 'camps';
+        return this.configuration.ApiAddress + 'camps';
     }
 
     constructor(private http: HttpClient, private configuration: ConfigurationService) {

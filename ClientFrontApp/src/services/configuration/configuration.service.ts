@@ -11,25 +11,32 @@ export class ConfigurationService {
   constructor(private envService: EnvService) {
   }
 
-  loadConfig() {
-    console.log(`Load configuration for '${this.envService.envName}' environment.`);
-
+  loadConfig(): Promise<boolean> {
     this.configuration = {
+      AppAdress : this.envService.appAddress,
       ApiAddress: this.envService.apiAddress,
       IdentityServerAddress: this.envService.identityServerAddress,
       ClientId: this.envService.clientId
     } as IServerConfiguration;
+
+    console.log(`Configuration loaded for '${this.envService.envName}' environment.`);
+
+    return new Promise<boolean>((resolve) => resolve());
   }
 
-  get apiAddress() {
+  get AppAddress() {
+    return this.configuration.AppAdress;
+  }
+
+  get ApiAddress() {
     return this.configuration.ApiAddress;
   }
 
-  get identityServerAddress() {
+  get IdentityServerAddress() {
     return this.configuration.IdentityServerAddress;
   }
 
-  get clientId() {
+  get ClientId() {
     return this.configuration.ClientId;
   }
 }

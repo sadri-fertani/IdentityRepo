@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { OidcSecurityService } from 'src/lib/auth/services/oidc.security.service';
+import { AuthService } from 'src/app/core/authentication/auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(public oidcSecurityService: OidcSecurityService) {
+  constructor(private authService: AuthService) {
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -19,13 +19,13 @@ export class TokenInterceptor implements HttpInterceptor {
     });
 
     // Injection du token (authentification avec l'API, si nécessaire)
-    const token = this.oidcSecurityService.getToken();
+    const token = this.authService.authorizationHeaderValue;
     
     if (token !== '') {
       request = request.clone({
         setHeaders:
         {
-          'Authorization': 'Bearer ' + token
+          'Authorization': token
         }
       });
     }
