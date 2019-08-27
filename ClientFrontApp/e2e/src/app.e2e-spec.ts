@@ -8,9 +8,23 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display header title', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to ClientFrontApp!');
+    expect(page.getElementText('app-root > app-shell > app-header > header > div > div > a > strong')).toEqual('OAuth Client');
+  });
+
+  it('can navigate to registration', () => {
+    page.navigateTo();
+    page.clickButton('app-root > app-shell > main > div > app-index > div > div > a:nth-child(3)');
+    browser.waitForAngular();
+    expect(page.getElementText('h1')).toEqual('Register');
+  });
+
+  it('can navigate to login', () => {
+    page.navigateTo();
+    page.clickButton('app-root > app-shell > main > div > app-index > div > div > a:nth-child(4)');
+    browser.waitForAngular();
+    expect(page.getElementText('h1')).toEqual('Login');
   });
 
   afterEach(async () => {

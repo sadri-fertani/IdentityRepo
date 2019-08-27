@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home.component';
+import { IndexComponent } from './index/index.component';
+import { Shell } from './../shell/shell.service';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  }
+  Shell.childRoutes([
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'home', component: IndexComponent }
+  ])
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: []
 })
 export class HomeRoutingModule { }

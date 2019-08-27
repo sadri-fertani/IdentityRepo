@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 const routes: Routes = [
   {
@@ -16,8 +17,13 @@ const routes: Routes = [
     loadChildren: () => import('./camps/camps.module').then(m => m.CampsModule)
   },
   {
-    path: 'unauthorized',
-    loadChildren: () => import('./unauthorized/unauthorized.module').then(m => m.UnauthorizedModule)
+    path: 'auth-callback',
+    component: AuthCallbackComponent
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
 

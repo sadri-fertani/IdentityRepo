@@ -1,41 +1,42 @@
-<h1>List of Camps</h1>
+<div class="container">
+  <h1>List of Camps</h1>
 
-<p *ngIf="!Camps"><em>Loading...</em></p>
-
-<table class='table' *ngIf="Camps">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Moniker</th>
-      <th>Event Date</th>
-      <th>Length</th>
-      <th>Venue</th>
-      <th>Location Address</th>
-      <th>Talks</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let camp of Camps">
-      <td>{{ camp.name }}</td>
-      <td>{{ camp.moniker }}</td>
-      <td>{{ camp.eventDate }}</td>
-      <td>{{ camp.length }}</td>
-      <td>{{ camp.venue }}</td>
-      <td>
-        {{ camp.locationAddress1 }}
-        <br />
-        {{ camp.locationAddress2 }}
-        <br />
-        {{ camp.locationAddress3 }}
-        <br />
-        {{ camp.locationCityTown }}
-        <br />
-        {{ camp.locationStateProvince }}
-        <br />
-        {{ camp.locationPostalCode }}
-        <br />
-        {{ camp.locationCountry }}</td>
-      <td>{{ (camp.talks).length }}</td>
-    </tr>
-  </tbody>
-</table>
+  <table class='table' *ngIf="!Busy">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Moniker</th>
+        <th scope="col">Event Date</th>
+        <th scope="col">Length</th>
+        <th scope="col">Venue</th>
+        <th scope="col">Location Address</th>
+        <th scope="col">Talks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let camp of Camps">
+        <td scope="row">{{ camp.name }}</td>
+        <td scope="row">{{ camp.moniker }}</td>
+        <td scope="row">{{ camp.eventDate }}</td>
+        <td scope="row">{{ camp.length }}</td>
+        <td scope="row">{{ camp.venue }}</td>
+        <td scope="row">
+          {{ camp.locationAddress1 }}
+          <br />
+          {{ camp.locationAddress2 }}
+          <br />
+          {{ camp.locationAddress3 }}
+          <br />
+          {{ camp.locationCityTown }}
+          <br />
+          {{ camp.locationStateProvince }}
+          <br />
+          {{ camp.locationPostalCode }}
+          <br />
+          {{ camp.locationCountry }}</td>
+        <td>{{ (camp.talks).length }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ngx-spinner></ngx-spinner>
+</div>

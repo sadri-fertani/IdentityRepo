@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>{{Title}}</h1>
+
+  <table class='table' *ngIf="!Busy">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Code</th>
+        <th scope="col">Alpha2</th>
+        <th scope="col">Alpha3</th>
+        <th scope="col">Name (En)</th>
+        <th scope="col">Name (Fr)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let country of Countries">
+        <td scope="row">{{ country.id }}</td>
+        <td scope="row">{{ country.code }}</td>
+        <td scope="row">{{ country.alpha2 }}</td>
+        <td scope="row">{{ country.alpha3 }}</td>
+        <td scope="row">{{ country.nomEN }}</td>
+        <td scope="row">{{ country.nomFR }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <ngx-spinner></ngx-spinner>
+</div>
