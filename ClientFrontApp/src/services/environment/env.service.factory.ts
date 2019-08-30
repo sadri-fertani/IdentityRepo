@@ -4,8 +4,14 @@ export const EnvServiceFactory = () => {
 
     const env = new EnvService();
 
-    if (window.location.href.indexOf('localhost:4200') !== -1) {
-        // Dev environment
+    if (window.location.href.indexOf('maclocalhost:4200') !== -1) {
+        // Dev (Mac) environment
+        env.enableDebug = true;
+        env.envName = 'dev';
+        env.clientId = 'ng_client_2';
+        env.appAddress = 'http://maclocalhost:4200/';
+    } else if (window.location.href.indexOf('localhost:4200') !== -1) {
+        // Dev (PC) environment
         env.enableDebug = true;
         env.envName = 'dev';
         env.clientId = 'ng_client_1';
