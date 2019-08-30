@@ -22,6 +22,13 @@ influx -host '...' -port '18151' -username '...' -password '...' -database '...'
 brew install influxdb
 ```
 
+### Allow user IIS to use SQL SERVER
+
+```
+CREATE LOGIN [IIS APPPOOL\UnManaged] FROM WINDOWS;
+CREATE USER UnManaged FOR LOGIN [IIS APPPOOL\UnManaged];
+```
+
 ### Documentation :
 [Official documentation](https://docs.influxdb.com/influxdb/v1.7/tools/shell)
 

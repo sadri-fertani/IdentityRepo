@@ -66,6 +66,18 @@ namespace AuthServer
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 3600
                 },
+                new Client {
+                    RequireConsent = false,
+                    ClientId = "ng_client_3_docker",
+                    ClientName = "Angular Application (Docker)",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedScopes = { "openid", "profile", "email", "api.scope" },
+                    RedirectUris = {"http://0.0.0.0:4200/auth-callback"},
+                    PostLogoutRedirectUris = {"http://0.0.0.0:4200/"},
+                    AllowedCorsOrigins = {"http://0.0.0.0:4200"},
+                    AllowAccessTokensViaBrowser = true,
+                    AccessTokenLifetime = 3600
+                },
             };
         }
     }
