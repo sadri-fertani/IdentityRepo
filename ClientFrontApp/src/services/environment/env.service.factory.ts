@@ -16,12 +16,18 @@ export const EnvServiceFactory = () => {
         env.envName = 'dev';
         env.clientId = 'ng_client_1';
         env.appAddress = 'http://localhost:4200/';
-    } else {
+    } else if (window.location.href.indexOf('0.0.0.0:4200') !== -1) {
+        // Dev (Docker) environment
+        env.enableDebug = true;
+        env.envName = 'dev';
+        env.clientId = 'ng_client_3_docker';
+        env.appAddress = 'http://0.0.0.0:4200/';
+    }else {
         // Production environment
         env.enableDebug = false;
         env.envName = 'prd';
-        env.clientId = 'ng_client_prod_1';        
-        env.appAddress = 'http://homeserver/HomeApp/';        
+        env.clientId = 'ng_client_prod_1';
+        env.appAddress = 'http://homeserver/HomeApp/';
     }
 
     env.apiAddress = 'http://homeserver/HomeAPI/api/';

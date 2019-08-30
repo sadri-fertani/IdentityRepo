@@ -1,0 +1,11 @@
+# version: '3.0'
+
+# services:
+#   docker-angular-cli:
+#     image: johnpapa/angular-cli
+#     build: .
+#     environment:
+#       NODE_ENV: production
+#     ports:
+#       - "4200:4200"
+#     restart: always
