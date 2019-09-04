@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IndexComponent } from './index.component';
 
-describe('IndexComponent', () => {
+describe('HomeComponent', () => {
   let component: IndexComponent;
   let fixture: ComponentFixture<IndexComponent>;
 
@@ -27,6 +27,6 @@ describe('IndexComponent', () => {
     const fixture = TestBed.createComponent(IndexComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('OAuth Client Demo');
+    expect(compiled.querySelector('h1').textContent).toContain('Home Application');
   });
 });

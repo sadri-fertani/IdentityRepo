@@ -1,11 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-// used to create fake backend
-import { FakeBackendInterceptor } from './shared/mocks/fake-backend-interceptor';
-
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
@@ -56,13 +53,6 @@ export function loadAuthenticationConfig(appConfig: ConfigurationService) {
       useFactory: loadAuthenticationConfig,
       deps: [ConfigurationService],
       multi: true,
-    },
-    // provider used to create fake backend
-    {
-      // use fake backend in place of Http service for backend-less development
-      provide: HTTP_INTERCEPTORS,
-      useClass: FakeBackendInterceptor,
-      multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,

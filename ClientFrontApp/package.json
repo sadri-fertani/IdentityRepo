@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "macserve": "ng serve --host maclocalhost --port 4200",
     "clean:prod": "del /q C:\\LocalWebApp\\HomeApp\\* && for /d %x in (C:\\LocalWebApp\\HomeApp\\*) do @rd /s /q \"%x\"",
-    "deploy": "xcopy /s .\\dist\\oauth-client C:\\LocalWebApp\\HomeApp"
+    "deploy": "xcopy /s .\\dist\\oauth-client C:\\LocalWebApp\\HomeApp",
+    "postinstall": "cd ./node_modules/protractor && npm i webdriver-manager@latest && cd ../.. && ./node_modules/.bin/webdriver-manager update"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "oidc-client": "^1.7.0",
     "rxjs": "~6.5.2",
     "tslib": "^1.9.0",
+    "webdriver-manager": "^12.1.6",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
