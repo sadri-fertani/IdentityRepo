@@ -2,6 +2,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/65920d430cb440cb9d2ea0d752cf5d9f)](https://app.codacy.com/app/sadri-fertani/IdentityRepo?utm_source=github.com&utm_medium=referral&utm_content=sadri-fertani/IdentityRepo&utm_campaign=Badge_Grade_Settings)
 
+[![Coverage Status](https://coveralls.io/repos/github/sadri-fertani/IdentityRepo/badge.svg?branch=master)](https://coveralls.io/github/sadri-fertani/IdentityRepo?branch=master)
+
 Identity Server on IIS
 
 ## Grafana - Cloud
