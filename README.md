@@ -4,6 +4,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/sadri-fertani/IdentityRepo/badge.svg?branch=master)](https://coveralls.io/github/sadri-fertani/IdentityRepo?branch=master)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/7kfwg2tj5qu63eqy?svg=true)](https://ci.appveyor.com/project/sadri-fertani/identityrepo)
+
 Identity Server on IIS
 
 ## Grafana - Cloud
