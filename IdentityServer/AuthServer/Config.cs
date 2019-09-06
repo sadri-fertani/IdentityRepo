@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace AuthServer
 {
@@ -78,6 +79,14 @@ namespace AuthServer
                     AllowAccessTokensViaBrowser = true,
                     AccessTokenLifetime = 3600
                 },
+                new Client
+                {
+                    ClientId = "ClientConsoleApp",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedScopes = { "api.scope" },
+                    Claims = new List<Claim>{new Claim("scope", "api.scope")}
+                }
             };
         }
     }
