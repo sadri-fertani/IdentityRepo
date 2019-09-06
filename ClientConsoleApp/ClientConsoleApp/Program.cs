@@ -15,8 +15,20 @@ namespace ClientConsoleApp
         {
             if (args.Any())
             {
+                Console.WriteLine();
+
                 foreach (var arg in args)
-                    CallWebApi(arg).GetAwaiter().GetResult();
+                {
+                    var result = CallWebApi(arg).GetAwaiter().GetResult();
+
+                    Console.WriteLine($"Argument : {arg}");
+                    Console.WriteLine("------------------");
+                    Console.WriteLine($"StatusCode : {result.StatusCode}");
+                    if (result.Result != null) Console.WriteLine(result.Result);
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine();
             }
             else
                 throw new ArgumentException("No arguments.");
@@ -88,7 +100,7 @@ namespace ClientConsoleApp
                             StatusCode = response.StatusCode,
                             Result = JObject.Parse(await response.Content.ReadAsStringAsync())
                         };
-                    }                    
+                    }
                 }
                 catch
                 {
